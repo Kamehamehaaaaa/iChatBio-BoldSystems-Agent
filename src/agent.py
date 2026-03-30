@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 from ichatbio.agent import IChatBioAgent
-from ichatbio.types import AgentCard, AgentEntrypoint
+from ichatbio.types import AgentCard, AgentEntrypoint, Artifact
 import get_params 
 
 from ichatbio.agent_response import ResponseContext
@@ -22,7 +22,7 @@ class BoldSystemsAgent(IChatBioAgent):
         return AgentCard(
             name="Bold systems org",
             description="Retieves data related to biological sequences of species from Bold Systems",
-            icon=None,
+            icon_url="http://abc.com",
             entrypoints=[
                 self.entrypoint,
             ]
@@ -34,6 +34,7 @@ class BoldSystemsAgent(IChatBioAgent):
         #         await get_params.run(request=request, context=context)
         #     case _:
         #         raise ValueError()
+        print("\n\nParams from ichatbio\n", params)
         client = AsyncOpenAI(api_key=utils.getValue("OPEN_API_KEY"), base_url=utils.getValue("OPENAI_BASE_URL"))
         instructor_client = instructor.patch(client)
         context.instructor_client = instructor_client

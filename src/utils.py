@@ -5,6 +5,10 @@ from pathlib import Path
 from openai import AsyncOpenAI
 import instructor
 
+import requests
+from urllib.parse import quote
+
+
 def getValue(key):
     value = os.getenv(key)
 
@@ -57,3 +61,25 @@ def add_client(state):
     client = AsyncOpenAI(api_key=getValue("OPEN_API_KEY"), base_url=getValue("OPENAI_BASE_URL"))
     instructor_client = instructor.patch(client)
     state["instructor_client"] = instructor_client
+
+async def partial_term_resolver(partial_term):
+    try:
+        limit = 10
+        print("getting matches", partial_term)
+        encoded_term = quote(partial_term)
+        url = "https://portal.boldsystems.org" + "/api/terms?partial_term=" + encoded_term + "&limit=" + limit
+
+        # print(url)
+
+        response = requests.get(url, timeout=10)
+        response_json = response.json()
+
+        if len(response_json) == 0:
+            return 0, {}
+        
+        return 1, {str(ind): match for ind, match in enumerate(response_json)}
+
+    except Exception as e:
+        print("Failed in term resolution")
+        print(e)
+        return 0, {"message": "no partital matches found in Bold"}

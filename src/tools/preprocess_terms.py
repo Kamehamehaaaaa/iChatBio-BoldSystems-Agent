@@ -2,7 +2,31 @@ from state import BoldAgentState
 import utils
 from urllib.parse import quote
 import requests
-import http
+from utils import partial_term_resolver
+
+async def verify_with_resolver(term):
+    try:
+        term = term.split(':')
+        success, resolver = await partial_term_resolver(term[-1])
+
+        # print("resolving")
+        # print(term)
+        # print(resolver)
+
+        # print()
+
+        if success == 0:
+            return False
+
+        for i in resolver:
+            if len(term) > 1 and i['scope'] == term[0]:
+                return True
+        
+        return False
+
+    except Exception as e:
+        print(e)
+
 
 async def preprocess_terms(state: BoldAgentState):
     # async with state["context"].begin_process(summary="Query preprocessor") as process:
@@ -11,7 +35,6 @@ async def preprocess_terms(state: BoldAgentState):
         return state
     
     process = state['process']
-    print(state)
     tokens = utils.params_to_token(state["extracted_terms"])
     encoded_tokens = quote(tokens)
 
@@ -38,12 +61,24 @@ async def preprocess_terms(state: BoldAgentState):
     success = response_json.get("successful_terms", "")
     if len(success) > 0:
         for s_terms in success:
-            state["valid_triplets"].append(s_terms["matched"].split(';')[0])
+            term = s_terms["matched"].split(';')[0]
+            if await verify_with_resolver(term):
+                state["valid_triplets"].append(term)
+            else:
+                await process.log(f"The term {term.split(':')[-1]} not found in Bold")
+                state['session_active'] = False
+                return state
 
     failed = response_json.get('failed_terms', '')
     if len(failed) > 0:
-        for s_terms in failed:
-            state["valid_triplets"].append(s_terms["matched"].split(';')[0])
+        for f_terms in failed:
+            term = f_terms["matched"].split(';')[0]
+            if await verify_with_resolver(term):
+                state["valid_triplets"].append(term)
+            else:
+                await process.log(f"The term {term.split(':')[-1]} not found in Bold")
+                state['session_active'] = False
+                return state
 
 
     # print(state)

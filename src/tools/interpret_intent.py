@@ -3,24 +3,7 @@ import utils
 from schema import responseModel
 from ichatbio.agent_response import IChatBioAgentProcess
 from urllib.parse import quote
-import requests
-
-async def get_possible_matches(partial_term):
-    try:
-        print("getting matches", partial_term)
-        encoded_term = quote(partial_term)
-        url = "https://portal.boldsystems.org" + "/api/terms?partial_term=" + encoded_term
-
-        # print(url)
-
-        response = requests.get(url, timeout=10)
-        
-        return {str(ind): match for ind, match in enumerate(response.json())}
-
-    except Exception as e:
-        print("Failed in term resolution")
-        print(e)
-        return {"message": "no partital matches found in Bold"}
+from utils import partial_term_resolver
 
 async def interpret_intent(state: BoldAgentState):
     # async with state["context"].begin_process(summary="Interpreting User Intent") as process:
@@ -53,8 +36,11 @@ async def interpret_intent(state: BoldAgentState):
 
     for term in terms:
         if term.get('scope','') == 'unresolved':
-            possible_matches = await get_possible_matches(term.get('value', ''))
-            await process.log(f"The query term {term.get('value', '')} has no exact match in Bold")
+            success, possible_matches = await partial_term_resolver(term.get('value', ''))
+            if success == 0:
+                await process.log(f"The query term {term.get('value', '')} has no exact match in Bold")
+                state['session_active'] = False
+                return state
             # print(possible_matches)
             await process.log(f"Possible matches", data=possible_matches)
             state['session_active'] = False

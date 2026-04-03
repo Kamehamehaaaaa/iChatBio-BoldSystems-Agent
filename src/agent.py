@@ -34,7 +34,6 @@ class BoldSystemsAgent(IChatBioAgent):
         #         await get_params.run(request=request, context=context)
         #     case _:
         #         raise ValueError()
-        print("\n\nParams from ichatbio\n", params)
         client = AsyncOpenAI(api_key=utils.getValue("OPEN_API_KEY"), base_url=utils.getValue("OPENAI_BASE_URL"))
         instructor_client = instructor.patch(client)
         context.instructor_client = instructor_client

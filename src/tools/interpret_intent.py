@@ -2,7 +2,6 @@ from state import BoldAgentState
 import utils
 from schema import responseModel
 from ichatbio.agent_response import IChatBioAgentProcess
-from langchain.tools import tool
 from urllib.parse import quote
 import requests
 

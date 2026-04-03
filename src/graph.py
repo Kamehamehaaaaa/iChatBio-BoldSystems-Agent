@@ -101,6 +101,8 @@ def view_graph(graph):
 async def run_pipeline(context, user_request: str):
     workflow = create_workflow()
 
+    view_graph(workflow)
+
     initial_state = BoldAgentState()
 
     initial_state["user_query"] = user_request

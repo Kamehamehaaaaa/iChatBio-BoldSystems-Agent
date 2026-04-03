@@ -2,7 +2,6 @@ from state import BoldAgentState
 from urllib.parse import quote
 from schema import responseModel
 from ichatbio.agent_response import IChatBioAgentProcess
-from langchain.tools import tool
 import requests
 
 async def summary_decision(state: BoldAgentState):

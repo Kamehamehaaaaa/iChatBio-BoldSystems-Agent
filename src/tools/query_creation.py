@@ -1,7 +1,6 @@
 from state import BoldAgentState
 from urllib.parse import quote
 import requests
-from langchain.tools import tool
 
 async def query_creation(state: BoldAgentState):
     # async with state["context"].begin_process(summary="Query preprocessor") as process:

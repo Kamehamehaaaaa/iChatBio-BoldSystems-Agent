@@ -42,8 +42,7 @@ class queryPhrase(BaseModel):
         ]
     ]
 
-    value: Optional[
-        Annotated[
+    value: Annotated[
             str,
             Field(
                 description=(
@@ -51,7 +50,6 @@ class queryPhrase(BaseModel):
                     "Ex: 'DNA barcode records from South Africa' would have value as South Africa"
                 )
             )
-        ]
     ]
 
     justification: Optional[

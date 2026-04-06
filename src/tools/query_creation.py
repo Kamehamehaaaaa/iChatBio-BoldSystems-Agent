@@ -12,6 +12,8 @@ async def query_creation(state: BoldAgentState):
 
     query_seq = ""
     for triplet in state["valid_triplets"]:
+        if len(query_seq) > 0:
+            query_seq+=';'
         query_seq += triplet
 
     encoded_seq = quote(query_seq)

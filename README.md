@@ -1,12 +1,13 @@
 # iChatBio-BoldSystems-Agent
-Implementation of Bold Systems (https://id.boldsystems.org) data source as an AI Agent for iChatBio (https://ichatbio.org)
+Implementation of Bold Systems (https://www.boldsystems.org/) data source as an AI Agent for iChatBio (https://ichatbio.org)
 
 # Current Agentic workflow
 
 graph TD
 
     __start__ --> interpret_intent
-    interpret_intent --> preprocess_terms
+    interpret_intent --> term_resolver
+    term_resolver --> preprocess_terms
 
     preprocess_terms -->|query| query_creation
     preprocess_terms -->|summary| summary_decision
@@ -22,4 +23,3 @@ graph TD
 
     finalize --> __end__
     summary_decision --> __end__
-

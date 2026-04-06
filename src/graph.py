@@ -101,7 +101,7 @@ def view_graph(graph):
 async def run_pipeline(context, user_request: str):
     workflow = create_workflow()
 
-    view_graph(workflow)
+    # view_graph(workflow)
 
     initial_state = BoldAgentState()
 
@@ -122,6 +122,7 @@ async def run_pipeline(context, user_request: str):
     async with context.begin_process(summary="Interpreting User Intent") as process:
         process: IChatBioAgentProcess
         initial_state['process'] = process
+        await process.log(f"Original request: {user_request}")
         result = await workflow.ainvoke(initial_state)
 
     return result

@@ -20,6 +20,16 @@ def getValue(key):
 
     return value
 
+# input 
+
+# {'field': , 
+# 'original_term': ,
+# 'priority': , 
+# 'records': ,
+# 'scope': , 
+# 'standardized_term': , 
+# 'summaries': , 
+# 'term': }
 def params_to_token(extracted_terms):
     query = ""
 
@@ -31,7 +41,7 @@ def params_to_token(extracted_terms):
             current_query += s + ":"
             if (f := term.get('field', '')) != '':
                 current_query += f+ ":"
-        if (v := term.get('value', '')) != '':
+        if (v := term.get('term', '')) != '':
             current_query += v
     
         query += current_query
@@ -67,7 +77,7 @@ async def partial_term_resolver(partial_term):
         limit = 10
         print("getting matches", partial_term)
         encoded_term = quote(partial_term)
-        url = "https://portal.boldsystems.org" + "/api/terms?partial_term=" + encoded_term + "&limit=" + limit
+        url = "https://portal.boldsystems.org" + "/api/terms?partial_term=" + encoded_term + "&limit=" + str(limit)
 
         # print(url)
 
@@ -75,9 +85,11 @@ async def partial_term_resolver(partial_term):
         response_json = response.json()
 
         if len(response_json) == 0:
-            return 0, {}
+            return 0, []
         
-        return 1, {str(ind): match for ind, match in enumerate(response_json)}
+        # return 1, {str(ind): match for ind, match in enumerate(response_json)}
+        print(response_json)
+        return 1, response_json
 
     except Exception as e:
         print("Failed in term resolution")

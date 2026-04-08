@@ -1,11 +1,5 @@
-from agent import BoldSystemsAgent
-from ichatbio.server import run_agent_server
+import  agent
 
-from graph import create_workflow
-
-
-create_workflow()
-agent = BoldSystemsAgent()
-run_agent_server(agent, "localhost", 8991)
-
-
+if __name__ == "__main__":
+    app = agent.create_app()
+    uvicorn.run(app, host="0.0.0.0", port=9999)

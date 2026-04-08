@@ -36,6 +36,8 @@ dependencies = [
     "pydantic>=2.12.0",
 
     "rapidfuzz>=2.0.0",
+
+    "langgraph>=1.1.6",
 ]
 
 [project.optional-dependencies]

@@ -7,11 +7,15 @@ from ichatbio.types import AgentCard, AgentEntrypoint, Artifact
 import get_params 
 
 from ichatbio.agent_response import ResponseContext
+from ichatbio.server import build_agent_app
+
 import graph
 from openai import AsyncOpenAI
 import instructor
 
 import utils
+
+from starlette.applications import Starlette
 
 class BoldSystemsAgent(IChatBioAgent):
     def __init__(self):
@@ -39,3 +43,9 @@ class BoldSystemsAgent(IChatBioAgent):
         context.instructor_client = instructor_client
         await graph.run_pipeline(context, request)
         await context.reply("Bold Systems query completed")
+
+
+def create_app() -> Starlette:
+    agent = BoldSystemsAgent()
+    app = build_agent_app(agent)
+    return app

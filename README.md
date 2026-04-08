@@ -3,6 +3,8 @@ Implementation of Bold Systems (https://www.boldsystems.org/) data source as an 
 
 # Current Agentic workflow
 
+```mermaid
+
 graph TD
 
     __start__ --> interpret_intent

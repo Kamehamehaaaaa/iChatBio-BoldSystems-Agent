@@ -52,7 +52,7 @@ async def preprocess_terms(state: BoldAgentState):
         res, resolved = await populate_with_resolver(term)
         print(res,resolved)
         if not res:
-            if len(term.get('value', '')):
+            if len(term.get('value', '')) == 0:
                 await process.log(f"Invalid value, agent encountered error")
             else:
                 await process.log(f"The term {term.get('value')} not found in Bold")

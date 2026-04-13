@@ -4,7 +4,7 @@ from urllib.parse import quote
 import requests
 from utils import partial_term_resolver
 
-async def populate_with_resolver(term):
+async def populate_with_resolver(process, term):
     try:
         value = term.get('value', '')
         if len(value) == 0:
@@ -13,8 +13,8 @@ async def populate_with_resolver(term):
         if len(value) < 3:
             return True, term
         
-        success, resolver = await partial_term_resolver(value)
-
+        success, resolver, url = await partial_term_resolver(value)
+        await process.log(f"Attempted to resolve the term '{term}' using url {url}")
         # print("resolving")
         # print(term)
         # print(resolver)
@@ -49,7 +49,7 @@ async def preprocess_terms(state: BoldAgentState):
 
     # use the partial term extractor to get BOLD specific triplets 
     for term in extracted_terms:
-        res, resolved = await populate_with_resolver(term)
+        res, resolved = await populate_with_resolver(process, term)
         print(res,resolved)
         if not res:
             if len(term.get('value', '')) == 0:
@@ -69,11 +69,12 @@ async def preprocess_terms(state: BoldAgentState):
     encoded_tokens = quote(tokens)
 
     url = "https://portal.boldsystems.org" + "/api/query/preprocessor?query=" + encoded_tokens
+    # state['urls'].append(url)
     response = requests.get(url, timeout=10)
 
     code = response.status_code
     # code = f"{response.status_code} {http.client.responses.get(response.status_code, '')}"
-    # await process.log(f"Bold Systems triplets verified with code: {code}")
+    await process.log(f"Parameters verified using url {url} with code: {code}")
 
     response_json = response.json()
 

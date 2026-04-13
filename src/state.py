@@ -27,6 +27,8 @@ class BoldAgentState(TypedDict, total=False):
     documents: bool = True
     images: bool = True
     geomap: bool = True
+    taxonomy: bool = True
+    urls: list = []
     # offset: int
     
     # conversation control

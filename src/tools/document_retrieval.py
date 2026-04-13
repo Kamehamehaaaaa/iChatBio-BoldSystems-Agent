@@ -18,22 +18,21 @@ async def document_retrieval(state: BoldAgentState):
 
     encoded_seq = quote(state['query_id'])
 
-    url = "https://portal.boldsystems.org" + "/api/documents/" + encoded_seq
+    url = "https://portal.boldsystems.org" + "/api/documents/" + encoded_seq + "/download?format=json"
 
     response = requests.get(url, timeout=10)
 
     code = response.status_code
     # code = f"{response.status_code} {http.client.responses.get(response.status_code, '')}"
-    await process.log(f"Bold Systems data retrieved: {code}")
+    await process.log(f"Bold Systems data retrieved using url {url} with status code {code}")
 
-    response_json = response.json()
+    # response_json = response.json()
 
     if code == 422:
-        await process.log(f"generating QueryId failed", data=response_json)
+        response_json = response.json()
+        await process.log(f"fetching records failed", data=response_json)
         state['session_active'] = False
         return state
-
-    print("\n\nDocument retrived\n\n", response_json)
 
     # state["documents"] = True
 

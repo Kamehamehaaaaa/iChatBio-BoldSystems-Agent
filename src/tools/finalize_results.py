@@ -6,6 +6,6 @@ async def finalize_results(state: BoldAgentState):
     
     process = state['process']
     
-    if state["documents"] and state["images"]:
+    if state["documents"] and state["images"] and state["geomap"] and state["taxonomy"]:
         await process.log(f"Completion of query")
         return state

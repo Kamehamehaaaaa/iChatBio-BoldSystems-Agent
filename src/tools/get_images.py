@@ -20,11 +20,13 @@ async def get_images(state: BoldAgentState):
 
     url = "https://portal.boldsystems.org" + "/api/images/" + encoded_seq
 
+    # state['urls'].append(url)
+
     response = requests.get(url, timeout=10)
 
     code = response.status_code
     # code = f"{response.status_code} {http.client.responses.get(response.status_code, '')}"
-    await process.log(f"Bold Systems data retrieved: {code}")
+    await process.log(f"Images retrieved using {url} with status code {code}")
 
     response_json = response.json()
 

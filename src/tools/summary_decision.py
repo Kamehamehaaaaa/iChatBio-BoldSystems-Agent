@@ -24,13 +24,14 @@ async def summary_decision(state: BoldAgentState):
 
     url = "https://portal.boldsystems.org" + "/api/summary?query=" + encoded_seq + "&fields=species,specimens,bin_uri,collection_date_start,coord,country/ocean,identified_by,inst,marker_code,sequence_run_site,sequence_upload_date"
 
-    print(url)
+    # print(url)
+    # state['urls'].append(url)
 
     response = requests.get(url, timeout=10)
 
     code = response.status_code
     # code = f"{response.status_code} {http.client.responses.get(response.status_code, '')}"
-    await process.log(f"summary of results generated with code: {code}")
+    await process.log(f"summary of results generated using url {url} with code: {code}")
 
     response_json = response.json()
 

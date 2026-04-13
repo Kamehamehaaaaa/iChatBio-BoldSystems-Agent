@@ -85,11 +85,11 @@ async def partial_term_resolver(partial_term):
         response_json = response.json()
 
         if len(response_json) == 0:
-            return 0, []
+            return 0, [], url
         
         # return 1, {str(ind): match for ind, match in enumerate(response_json)}
         print(response_json)
-        return 1, response_json
+        return 1, response_json, url
 
     except Exception as e:
         print("Failed in term resolution")

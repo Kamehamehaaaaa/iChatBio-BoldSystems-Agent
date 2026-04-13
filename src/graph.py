@@ -11,6 +11,7 @@ from tools.document_retrieval import document_retrieval
 from tools.get_images import get_images
 from tools.finalize_results import finalize_results
 from tools.generate_map import generate_map
+from tools.taxonomy_hierarchy import taxonomy_hierarchy
 
 from tools.conditional_nodes import should_summarize, route_after_query
 
@@ -31,6 +32,8 @@ def create_workflow():
 
     builder.add_node("get_images", get_images)
     builder.add_node("generate_map", generate_map)
+
+    builder.add_node("taxonomy_hierarchy", taxonomy_hierarchy)
     # builder.add_node("generate_geomap", generate_geomap)
 
     builder.add_node("finalize", finalize_results)
@@ -58,6 +61,7 @@ def create_workflow():
             "documents": "document_retrieval",
             "images": "get_images",
             "geomap": "generate_map",
+            "taxonomy": "taxonomy_hierarchy",
             "finalize": "finalize"
         }
     )
@@ -65,6 +69,7 @@ def create_workflow():
     builder.add_edge("document_retrieval", "finalize")
     builder.add_edge("get_images", "finalize")
     builder.add_edge("generate_map", "finalize")
+    builder.add_edge("taxonomy_hierarchy", "finalize")
 
 
     builder.add_edge("finalize", END)
@@ -118,8 +123,10 @@ async def run_pipeline(context, user_request: str):
     initial_state['documents'] = True
     initial_state['images'] = True
     initial_state['geomap'] = True
+    initial_state['taxonomy'] = True
+    initial_state['urls'] = []
 
-    async with context.begin_process(summary="Interpreting User Intent") as process:
+    async with context.begin_process(summary="Searching BOLD Systems") as process:
         process: IChatBioAgentProcess
         initial_state['process'] = process
         await process.log(f"Original request: {user_request}")

@@ -18,15 +18,17 @@ async def query_creation(state: BoldAgentState):
 
     encoded_seq = quote(query_seq)
 
-    url = "https://portal.boldsystems.org" + "/api/query?query=" + encoded_seq
+    url = "https://portal.boldsystems.org" + "/api/query?query=" + encoded_seq + "&extent=limited"
 
     print(url)
+
+    # state['urls'].append(url)
 
     response = requests.get(url, timeout=10)
 
     code = response.status_code
     # code = f"{response.status_code} {http.client.responses.get(response.status_code, '')}"
-    await process.log(f"generating QueryId returned: {code}")
+    await process.log(f"generating QueryId using url {url} returned: {code}")
 
     response_json = response.json()
 

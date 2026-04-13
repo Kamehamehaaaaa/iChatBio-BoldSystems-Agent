@@ -74,7 +74,7 @@ class responseModel(BaseModel):
     terms: List[queryPhrase] = Field(description="List of query phrases to resolve the user request.")
 
     query_needs: Optional[
-        List[Literal["summary", "documents", "images", "geomap"]]
+        List[Literal["summary", "documents", "images", "geomap", "taxonomy"]]
     ] = Field(
         None,
         description=(
@@ -83,7 +83,8 @@ class responseModel(BaseModel):
             "- 'summary': when the user requires a textual summary count of the data and not actual data.\n"
             "- 'documents': when the user needs detailed records or data entries.\n"
             "- 'images': when the user requests visual content or images.\n"
-            "- 'geomap': when the user wants geographical mapping or spatial data of the query."
+            "- 'geomap': when the user wants geographical mapping or spatial data of the query.\n"
+            "- 'taxonomy': when the user wants taxonomy summary of the data of the query.\n"
         )
     )
 

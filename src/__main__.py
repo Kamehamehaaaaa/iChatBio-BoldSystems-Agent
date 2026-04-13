@@ -1,4 +1,5 @@
 import  agent
+import uvicorn
 
 if __name__ == "__main__":
     app = agent.create_app()

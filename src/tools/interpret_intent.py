@@ -36,13 +36,15 @@ async def interpret_intent(state: BoldAgentState):
 
     for term in terms:
         if term.get('scope','') == 'unresolved':
-            success, possible_matches = await partial_term_resolver(term.get('value', ''))
+            success, possible_matches, url = await partial_term_resolver(term.get('value', ''))
+            await process.log(f"Failed to infer the scope of the search term '{term.get('value', '')}'")
             if success == 0:
-                await process.log(f"The query term {term.get('value', '')} has no exact match in Bold")
+                # await process.log(f"The query term {term.get('value', '')} has no exact match in Bold")
                 state['session_active'] = False
+                await process.log(f"Attempted to resolve the term '{term.get('value', '')} using url {url}")
                 return state
             # print(possible_matches)
-            await process.log(f"Possible matches", data=possible_matches)
+            await process.log(f"Possible matches for search term: {term.get('value', '')}", data=possible_matches)
             state['session_active'] = False
             return state
 

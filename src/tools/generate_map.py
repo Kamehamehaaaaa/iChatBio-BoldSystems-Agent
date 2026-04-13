@@ -20,11 +20,13 @@ async def generate_map(state: BoldAgentState):
 
     url = "https://portal.boldsystems.org" + "/api/maps/" + encoded_seq
 
+    # state['urls'].append(url)
+
     response = requests.get(url, timeout=10)
 
     code = response.status_code
     # code = f"{response.status_code} {http.client.responses.get(response.status_code, '')}"
-    await process.log(f"map retrieved: {code}")
+    await process.log(f"Map retrieved using url {url} with status code {code}")
 
     if 'application/json' in response.headers.get('Content-Type', ''):
         response_json = response.json()

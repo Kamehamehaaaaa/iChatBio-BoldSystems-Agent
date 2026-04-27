@@ -1,7 +1,7 @@
 from typing import TypedDict, List, Optional, Dict, Any
 from openai import AsyncOpenAI
 from ichatbio.agent_response import ResponseContext
-from schema import queryPhrase
+from schema import queryPhrase, postFilter
 from ichatbio.agent_response import IChatBioAgentProcess
 
 class BoldAgentState(TypedDict, total=False):
@@ -11,6 +11,7 @@ class BoldAgentState(TypedDict, total=False):
     
     # structured interpretation
     extracted_terms: List[queryPhrase]
+    post_filters: List[postFilter]
     missing_fields: List[str]
     query_needs: List[str]
     
@@ -42,3 +43,8 @@ class BoldAgentState(TypedDict, total=False):
     # ichatbio context
     context: ResponseContext
     process: IChatBioAgentProcess
+
+    length: int
+    start: int
+
+    records: List

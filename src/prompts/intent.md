@@ -5,6 +5,14 @@ If you are not sure about params, use the fallback provided.
 
 Images, Documents, Records, Distribution, Map of collections or samples are to be in query_needs and not as terms.
 
+If a term refers to metadata such as marker_code, collection_date, identified_by, or sequence properties, do NOT assign a scope. Leave scope null so it can be handled as a post-filter.
+
+Common marker codes include:
+COI, COI-5P, COI-3P, ND1, ND2, ND3, ND4, ND5, 16S, 18S
+
+These are NOT IDs.
+They should be treated as post-filters.
+
 # Examples
 
 ## Example 1 - When the request has a taxonomical name.

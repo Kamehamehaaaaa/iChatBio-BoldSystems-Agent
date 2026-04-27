@@ -12,6 +12,7 @@ from tools.get_images import get_images
 from tools.finalize_results import finalize_results
 from tools.generate_map import generate_map
 from tools.taxonomy_hierarchy import taxonomy_hierarchy
+from tools.post_processing import post_processing
 
 from tools.conditional_nodes import should_summarize, route_after_query
 
@@ -29,6 +30,7 @@ def create_workflow():
     builder.add_node("query_creation", query_creation)
     builder.add_node("summary_decision", summary_decision)
     builder.add_node("document_retrieval", document_retrieval)
+    builder.add_node("post_processing", post_processing)
 
     builder.add_node("get_images", get_images)
     builder.add_node("generate_map", generate_map)
@@ -66,7 +68,8 @@ def create_workflow():
         }
     )
 
-    builder.add_edge("document_retrieval", "finalize")
+    builder.add_edge("document_retrieval", "post_processing")
+    builder.add_edge("post_processing", "finalize")
     builder.add_edge("get_images", "finalize")
     builder.add_edge("generate_map", "finalize")
     builder.add_edge("taxonomy_hierarchy", "finalize")
@@ -125,6 +128,9 @@ async def run_pipeline(context, user_request: str):
     initial_state['geomap'] = True
     initial_state['taxonomy'] = True
     initial_state['urls'] = []
+    initial_state['records'] = []
+    initial_state['start'] = 0
+    initial_state['length'] = 1000
 
     async with context.begin_process(summary="Searching BOLD Systems") as process:
         process: IChatBioAgentProcess

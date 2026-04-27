@@ -84,6 +84,10 @@ async def partial_term_resolver(partial_term):
         response = requests.get(url, timeout=10)
         response_json = response.json()
 
+        code = response.status_code
+
+        print(response_json,code)
+
         if len(response_json) == 0:
             return 0, [], url
         
@@ -94,4 +98,4 @@ async def partial_term_resolver(partial_term):
     except Exception as e:
         print("Failed in term resolution")
         print(e)
-        return 0, {"message": "no partital matches found in Bold"}
+        return 0, {"message": "no partital matches found in Bold"}, url

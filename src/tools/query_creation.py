@@ -18,7 +18,7 @@ async def query_creation(state: BoldAgentState):
 
     encoded_seq = quote(query_seq)
 
-    url = "https://portal.boldsystems.org" + "/api/query?query=" + encoded_seq + "&extent=limited"
+    url = "https://portal.boldsystems.org" + "/api/query?query=" + encoded_seq + "&extent=full"
 
     print(url)
 

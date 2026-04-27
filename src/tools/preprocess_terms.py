@@ -14,7 +14,7 @@ async def populate_with_resolver(process, term):
             return True, term
         
         success, resolver, url = await partial_term_resolver(value)
-        await process.log(f"Attempted to resolve the term '{term}' using url {url}")
+        await process.log(f"Attempted to resolve the term '{value}' using url {url}")
         # print("resolving")
         # print(term)
         # print(resolver)
@@ -50,7 +50,7 @@ async def preprocess_terms(state: BoldAgentState):
     # use the partial term extractor to get BOLD specific triplets 
     for term in extracted_terms:
         res, resolved = await populate_with_resolver(process, term)
-        print(res,resolved)
+        # print(res,resolved)
         if not res:
             if len(term.get('value', '')) == 0:
                 await process.log(f"Invalid value, agent encountered error")

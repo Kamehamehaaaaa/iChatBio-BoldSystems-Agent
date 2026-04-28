@@ -14,7 +14,7 @@ from tools.generate_map import generate_map
 from tools.taxonomy_hierarchy import taxonomy_hierarchy
 from tools.post_processing import post_processing
 
-from tools.conditional_nodes import should_summarize, route_after_query
+from tools.conditional_nodes import should_summarize, route_after_query, ready_to_finalize
 
 from ichatbio.agent_response import IChatBioAgentProcess
 
@@ -69,10 +69,24 @@ def create_workflow():
     )
 
     builder.add_edge("document_retrieval", "post_processing")
-    builder.add_edge("post_processing", "finalize")
-    builder.add_edge("get_images", "finalize")
-    builder.add_edge("generate_map", "finalize")
-    builder.add_edge("taxonomy_hierarchy", "finalize")
+    # builder.add_edge("post_processing", "finalize")
+    # builder.add_edge("get_images", "finalize")
+    # builder.add_edge("generate_map", "finalize")
+    # builder.add_edge("taxonomy_hierarchy", "finalize")
+
+    builder.add_edge("post_processing", "join")
+    builder.add_edge("get_images", "join")
+    builder.add_edge("generate_map", "join")
+    builder.add_edge("taxonomy_hierarchy", "join")
+
+    builder.add_conditional_edges(
+    "join",
+    ready_to_finalize,
+    {
+        True: "finalize",
+        False: "join"
+    }
+)
 
 
     builder.add_edge("finalize", END)

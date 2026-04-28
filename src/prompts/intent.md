@@ -5,7 +5,7 @@ If you are not sure about params, use the fallback provided.
 
 Images, Documents, Records, Distribution, Map of collections or samples are to be in query_needs and not as terms.
 
-If a term refers to metadata such as marker_code, collection_date, identified_by, or sequence properties, do NOT assign a scope. Leave scope null so it can be handled as a post-filter.
+If a term refers to metadata such as marker_code, collection_date_start, identified_by dont use it as a primary filter for searching.
 
 Common marker codes include:
 COI, COI-5P, COI-3P, ND1, ND2, ND3, ND4, ND5, 16S, 18S
@@ -105,4 +105,64 @@ They should be treated as post-filters.
 }
 ```
 
-If any information about parameters or previous retries will be added under **Additional information** section below.
+## Example 5 - When the request needs filtering on collectors.
+
+```
+"Request": "Show me DNA records for rattus rattus collected by Beth Shapiro"
+"Response": {
+    "user_intent": "The user is requesting DNA barcode records specifically for the species Rattus rattus filtered by collectors Beth Shapiro.",
+    "terms": [
+        {
+            "scope": "tax",
+            "field": "species",
+            "value": "Rattus rattus",
+            "justification": "The user specified a species name, which falls under the taxonomic scope."
+        }
+    ],
+    "post_filters": [
+        {
+            "filter": "collectors"
+            "operator": "contains"
+            "value": "Beth Shapiro"
+            "justification": "user request specifies post filter"
+        }
+    ]
+    "query_needs": [
+        "documents"
+    ],
+    "assumptions": [],
+    "uncertainities": [],
+    "clarification_needed": False
+}
+```
+
+## Example 6 - When the request needs filtering on marker codes.
+
+```
+"Request": "Records of sample NCB1021 with marker code ND3"
+"Response": {
+    "user_intent": "user asks for sample and post filter with marker code",
+    "terms": [
+        {
+            "scope": "ids",
+            "field": "sampleid",
+            "value": "NCB1021",
+            "justification": "The user specified a sampleid."
+        }
+    ],
+    "post_filters": [
+        {
+            "filter": "marker_code"
+            "operator": "equals"
+            "value": "ND3"
+            "justification": "user request specifies post filtering with marker code"
+        }
+    ]
+    "query_needs": [
+        "documents"
+    ],
+    "assumptions": [],
+    "uncertainities": [],
+    "clarification_needed": False
+}
+```

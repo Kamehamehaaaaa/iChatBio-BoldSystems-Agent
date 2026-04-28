@@ -14,3 +14,11 @@ def route_after_query(state):
     if len(routes) == 0:
         routes.append('finalize')
     return routes
+
+def ready_to_finalize(state):
+    return (
+        state.get("documents")
+        and state.get("images")
+        and state.get("geomap")
+        and state.get("taxonomy")
+    )

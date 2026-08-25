@@ -69,24 +69,24 @@ def create_workflow():
     )
 
     builder.add_edge("document_retrieval", "post_processing")
-    # builder.add_edge("post_processing", "finalize")
-    # builder.add_edge("get_images", "finalize")
-    # builder.add_edge("generate_map", "finalize")
-    # builder.add_edge("taxonomy_hierarchy", "finalize")
+    builder.add_edge("post_processing", "finalize")
+    builder.add_edge("get_images", "finalize")
+    builder.add_edge("generate_map", "finalize")
+    builder.add_edge("taxonomy_hierarchy", "finalize")
 
-    builder.add_edge("post_processing", "join")
-    builder.add_edge("get_images", "join")
-    builder.add_edge("generate_map", "join")
-    builder.add_edge("taxonomy_hierarchy", "join")
+    # builder.add_edge("post_processing", "join")
+    # builder.add_edge("get_images", "join")
+    # builder.add_edge("generate_map", "join")
+    # builder.add_edge("taxonomy_hierarchy", "join")
 
-    builder.add_conditional_edges(
-    "join",
-    ready_to_finalize,
-    {
-        True: "finalize",
-        False: "join"
-    }
-)
+    # builder.add_conditional_edges(
+    # "join",
+    # ready_to_finalize,
+    # {
+    #     True: "finalize",
+    #     False: "join"
+    # }
+    # )
 
 
     builder.add_edge("finalize", END)

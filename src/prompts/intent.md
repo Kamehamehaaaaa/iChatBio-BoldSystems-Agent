@@ -121,7 +121,7 @@ They should be treated as post-filters.
     ],
     "post_filters": [
         {
-            "filter": "collectors"
+            "field": "collectors"
             "operator": "contains"
             "value": "Beth Shapiro"
             "justification": "user request specifies post filter"
@@ -152,12 +152,79 @@ They should be treated as post-filters.
     ],
     "post_filters": [
         {
-            "filter": "marker_code"
+            "field": "marker_code"
             "operator": "equals"
             "value": "ND3"
             "justification": "user request specifies post filtering with marker code"
         }
     ]
+    "query_needs": [
+        "documents"
+    ],
+    "assumptions": [],
+    "uncertainities": [],
+    "clarification_needed": False
+}
+```
+
+## Example 7 - When the request needs filtering on general marker codes.
+
+```
+"Request": "Find all public COI barcode records for Aedes aegypti collected in Florida."
+"Response": {
+    "user_intent": "The user is requesting to see all public COI barcode records specifically for the species Aedes aegypti that were collected in Florida from Bold Systems.",
+    "terms": [
+        {
+            "scope": "ids",
+            "field": "sampleid",
+            "value": "NCB1021",
+            "justification": "The user specified a sampleid."
+        },
+        {
+            "scope": "geo",
+            "field": "province/state",
+            "value": "Florida",
+            "justification": "The user specified a geographic location, which falls under the geopolitical scope."
+        },
+        {
+            "scope": "geo",
+            "field": "country/ocean",
+            "value": "United States",
+            "justification": "Alachua County is located in the United States, which is relevant for the geographic query."
+        }
+    ],
+    "post_filters": [
+        {
+            "field": "marker_code"
+            "operator": "contains"
+            "value": "COI"
+            "justification": "user request specifies post filtering with marker code"
+        }
+    ],
+    "query_needs": [
+        "documents"
+    ],
+    "start": 0,
+    "length": 1000,
+    "assumptions": [],
+    "uncertainities": [],
+    "clarification_needed": False
+}
+```
+
+## Example 8 - Request has institutes or musuems 
+```
+"Request": "What barcode records exist from Everglades National Park"
+"Response": {
+    "user_intent": "The user is requesting to see all barcode records associated with Everglades National Park from Bold Systems.",
+    "terms": [
+        {
+            "scope": "inst",
+            "field": "name",
+            "value": "Everglades National Park",
+            "justification": "The user specified Everglades National Park."
+        }
+    ],
     "query_needs": [
         "documents"
     ],

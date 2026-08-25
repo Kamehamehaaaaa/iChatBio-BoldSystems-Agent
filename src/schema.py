@@ -106,7 +106,7 @@ class postFilter(BaseModel):
         Field(
             description="Operator used for filtering"
         )
-    ] = "equals"
+    ]
 
     value: Annotated[
         str,
